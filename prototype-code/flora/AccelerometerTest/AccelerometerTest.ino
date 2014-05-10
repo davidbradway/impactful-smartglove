@@ -13,11 +13,7 @@ void setup()
     Serial.println("Oops ... unable to initialize the LSM303. Check your wiring!");
     while (1);
   }
-  else
-  {
-    Serial.println("Good!");
-  }
-  Serial.println("Accel X, Y, Z, Mag X, Y, Z");
+  Serial.println  ("Accel X, Y, Z, Mag X, Y, Z,");
 }
 
 void loop()
@@ -31,3 +27,4 @@ void loop()
   Serial.print((int)lsm.magData.z);   Serial.println(",");
   delay(500);
 }
+

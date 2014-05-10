@@ -1,6 +1,6 @@
 /*
   Blink
-  Turns on an LED on for one second, then off for one second, repeatedly.
+  Turns on an LED on, then offs, repeatedly.
  
   This example code is in the public domain.
  */
@@ -15,7 +15,7 @@ void setup() {
   pinMode(led, OUTPUT);
   Serial.println("Good!");
 
-}
+  }
 
 // the loop routine runs over and over again forever:
 void loop() {
