@@ -18,9 +18,9 @@
 ## Description of usage
 - Detect punch
 - Operate in three modes
-1. Intensity
-2. Speed
-3. Consistency
+ 1. Intensity
+ 2. Speed
+ 3. Consistency
 - Display feedback on LEDs
 
 ## Business Plan
