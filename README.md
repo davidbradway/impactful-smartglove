@@ -34,3 +34,4 @@
 4. Launch the Impactful SmartGlove in Sweden and prepare to expand into Denmark and Norway
 5. Norway, Cuba and North Korea still ban professional boxing
 6. Rumors on [BoxingScene.com](http://www.boxingscene.com/professional-boxing-coming-back-norway--70242) suggest Norway may lift its ban in 2014.
+7. Market for fitness, self-defense, and competition
