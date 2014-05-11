@@ -46,8 +46,8 @@ void loop() {
   // send the value of sensor
   //Serial.println(analogRead(A0));
   lsm.read();
-  //Serial.println((int)lsm.accelData.x);
-  //Serial.println((int)lsm.accelData.y);
+  Serial.println((int)lsm.accelData.x);
+  Serial.println((int)lsm.accelData.y);
   Serial.println((int)lsm.accelData.z);
   //Serial.println((int)lsm.magData.x);  
   //Serial.println((int)lsm.magData.y);  
