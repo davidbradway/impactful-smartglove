@@ -17,7 +17,6 @@
 - [Lilypad Beginner's Kit](https://www.sparkfun.com/products/retired/10354)
 - [Lilypad Simple](http://arduino.cc/en/Main/ArduinoBoardLilyPadSimple)
 - [Lilypad](http://lilypadarduino.org/)
-- [Lilypad](http://lilypadarduino.org/)
 - [#wth2014](https://tagboard.com/wth2014)
 
 ## Description of usage
