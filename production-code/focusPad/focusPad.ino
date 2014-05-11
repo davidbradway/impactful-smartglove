@@ -1,3 +1,5 @@
+#include <Adafruit_NeoPixel.h>
+
 #include <VirtualWire.h>
 #include <VirtualWire_Config.h>
 
@@ -8,10 +10,19 @@ const int sensorPin = 2;    // pin that the sensor is attached to
 const int ledPin = 13;        // pin that the LED is attached to
 const int transmitPin = 5;  // pin that the TX is connected to
 
+
+#define STRIPLIGHT_PIN 6
+
 // variables:
 int sensorValue = 0;         // the sensor value
 int sensorMin = 1023;        // minimum sensor value
 int sensorMax = 0;           // maximum sensor value
+
+
+
+int maxImpact;
+byte nLightsToLight = 0;
+
 
 typedef enum _PAD_MODE {
   MODE_POWER=0,
@@ -33,12 +44,49 @@ int nLogs=0;
 
 
 
+// Parameter 1 = number of pixels in strip
+// Parameter 2 = pin number (most are valid)
+// Parameter 3 = pixel type flags, add together as needed:
+//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
+//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, STRIPLIGHT_PIN, NEO_GRB + NEO_KHZ800);
+
+
+void clearBar()
+{
+  for(int i=0;i<strip.numPixels();i++)
+  {
+    strip.setPixelColor(i,strip.Color(0,0,0));
+  }
+}
+
+
+void colorBar(uint16_t nLights, uint32_t c) {
+  clearBar();
+  if(nLights > strip.numPixels()) nLights = strip.numPixels();  // TODO: ?:
+  
+  for(uint16_t i=0; i<nLights; i++) {
+      strip.setPixelColor(i, c);
+      strip.show();
+  }
+}
+
+
 void setup() {
+  int curTime;
+
   pinMode(ledPin, OUTPUT);
   Serial.begin(9600);
 
   Serial.println("Begin");
 
+// initialize the strip
+  
+  strip.begin();
+  strip.show();
+  
 
   // turn on LED to signal the start of the calibration period:
 
@@ -46,6 +94,12 @@ void setup() {
 
   // calibrate during the first five seconds 
   while (millis() < 5000) {
+    curTime = millis();
+    
+    int nPixels = (curTime/75)%8;
+    colorBar(nPixels, strip.Color(64,0,0));
+  
+
     sensorValue = analogRead(sensorPin);
 
     // record the maximum sensor value
@@ -75,6 +129,9 @@ void setup() {
   }
 
   buff[0] = 0;
+  
+  clearBar();
+  
 }
 
 
@@ -120,6 +177,7 @@ void processLogging()
 void processLoggingEnded()
 {
       //     Serial.println(sensorValue, HEX);
+     maxImpact = 0;
     Serial.print("processLoggingEnded: ");
     Serial.println(nLogs);
     for(int i=0;i<nLogs;i++)
@@ -127,14 +185,26 @@ void processLoggingEnded()
       Serial.print(buff[i], HEX);
       Serial.print(":");        
       if(i%8==0) Serial.println("."); 
+
+      if(buff[i]>maxImpact) maxImpact = buff[i];
+
     }
+    
+
+    nLightsToLight = (maxImpact+1)/4;
+
     Serial.println("Done:");
+
+
     if(bTransmit==true) {
       digitalWrite(ledPin, true); // Flash a light to show transmitting
       vw_send((uint8_t *)buff, nLogs);
       vw_wait_tx(); // Wait until the whole message is gone
       digitalWrite(ledPin, false);
     }      
+
+
+
 
 }
 
@@ -147,7 +217,6 @@ void loop() {
   sensorValue=(sv1+sv2+sv3) / 3;
   
   bLastLogging = bLogging;
-  
 
   if(bLogging == false)
   {
@@ -160,15 +229,26 @@ void loop() {
 
   if(bLogging !=bLastLogging)
   {
-    if(bLastLogging = true)
+    if(bLastLogging == true && nLogs >= 2)
     {
       processLoggingEnded();
     }
+    // else logging has just started....ignore.....or maybe do stuff to see if we're changing modes.
+    
   }
 
-  if(sensorValue >10) Serial.println(sensorValue);
+
+  if(maxImpact >0)
+  {
+    
+    colorBar(maxImpact/16+1, strip.Color(0,63,0));
+    maxImpact-=2;
+  }  
+
+
 
   // fade the LED using the calibrated value:
+  if(sensorValue >10) Serial.println(sensorValue);
   analogWrite(ledPin, sensorValue);
 }
 
