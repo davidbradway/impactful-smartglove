@@ -14,6 +14,11 @@
 - [Sample Data](https://docs.google.com/spreadsheets/d/1FJm560VEfG71ycGG6PFauqhReCmirWezqJmgE8yc2Gc/edit#gid=667733735)
 - [433Mhz RF link](http://www.seeedstudio.com/wiki/433Mhz_RF_link_kit)
 - [FLORA Pinout](https://learn.adafruit.com/assets/2845)
+- [Lilypad Beginner's Kit](https://www.sparkfun.com/products/retired/10354)
+- [Lilypad Simple](http://arduino.cc/en/Main/ArduinoBoardLilyPadSimple)
+- [Lilypad](http://lilypadarduino.org/)
+- [Lilypad](http://lilypadarduino.org/)
+- [#wth2014](https://tagboard.com/wth2014)
 
 ## Description of usage
 - Detect punch
